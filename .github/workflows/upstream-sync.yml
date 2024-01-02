@@ -10,8 +10,6 @@ on:
     - cron: "0 0 * * *" # every day at midnight
   workflow_dispatch:
 
-permissions: write-all
-
 jobs:
   sync-main-apache:
     name: Sync main-apache branch
@@ -21,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ secrets.GH_TOKEN }} 
 
       - name: Setup git environment
         run: |
