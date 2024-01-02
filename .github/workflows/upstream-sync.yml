@@ -20,6 +20,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup git environment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "$USERNAME"
           git config --global user.email "$USEREMAIL"
