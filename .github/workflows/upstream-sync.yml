@@ -38,7 +38,7 @@ jobs:
         run: git merge --no-edit upstream/main
 
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.gh_token }}
+        with:
+          token: ${{ secrets.GH_TOKEN }} 
         run: git push
 
