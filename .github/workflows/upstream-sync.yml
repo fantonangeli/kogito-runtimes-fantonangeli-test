@@ -18,8 +18,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.gh_token }}
 
       - name: Setup git environment
         run: |
@@ -40,5 +38,7 @@ jobs:
         run: git merge --no-edit upstream/main
 
       - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.gh_token }}
         run: git push
 
