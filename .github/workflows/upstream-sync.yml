@@ -41,4 +41,7 @@ jobs:
         run: git merge --no-edit upstream/main
 
       - name: Push changes
-        run: git push --follow-tags
+        run: git push
+
+      - name: Push tags
+        run: git push --tags
