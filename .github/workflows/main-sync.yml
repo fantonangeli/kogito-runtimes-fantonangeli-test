@@ -58,7 +58,7 @@ jobs:
 
       - name: Push changes
         if: steps.check_changes.outputs.is_changed
-        run: git push origin
+        run: git push -u origin
 
       - name: Create the PR
         if: steps.check_changes.outputs.is_changed
