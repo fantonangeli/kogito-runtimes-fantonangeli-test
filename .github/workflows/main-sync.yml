@@ -31,7 +31,7 @@ jobs:
 
       - name: Fetch all
         # By default, GitHub fetches only a single commit unless you specify "--depth 0". Without this "git merge" throwns an "unrelated histories".
-        run: git fetch --all --depth 0
+        run: git fetch --all --depth=0
 
       - name: Checkout main branch
         run: git checkout main
