@@ -58,7 +58,7 @@ jobs:
 
       - name: Push changes
         if: steps.check_changes.outputs.is_changed
-        run: git push -u origin
+        run: git push -u origin sync-main-pr-${{ steps.generate_pr_id.outputs.pr_id }}
 
       - name: Create the PR
         if: steps.check_changes.outputs.is_changed
