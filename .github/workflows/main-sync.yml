@@ -3,6 +3,7 @@ name: Create a PR to sync main branch with main-apache
 env:
   USERNAME: kie-ci
   USEREMAIL: kie-ci0@redhat.com
+  GITHUB_TOKEN: ${{ secrets.APACHE_SYNC_MIDSTREAM_TOKEN }}
 
 on:
   # schedule:
