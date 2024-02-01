@@ -1,0 +1,65 @@
+name: Create a PR to sync main branch with main-apache
+
+env:
+  USERNAME: kie-ci
+  USEREMAIL: kie-ci0@redhat.com
+
+on:
+  # schedule:
+    #- cron: "0 0 * * *" # every day at midnight
+  workflow_dispatch:
+
+jobs:
+  sync-main:
+    name: Sync main with main-apache branch
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Generate PR ID
+        id: generate_pr_id
+        run: echo "pr_id=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup git environment
+        run: |
+          git config --global user.name "$USERNAME"
+          git config --global user.email "$USEREMAIL"
+
+      - name: Fetch all
+        run: git fetch --all
+
+      - name: Checkout main branch
+        run: git checkout main
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet origin/main-apache; then
+            echo "No changes detected."
+            echo "is_changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected."
+            echo "is_changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create the PR branch
+        if: steps.check_changes.outputs.is_changed
+        run: git checkout -b sync-main-pr-${{ steps.generate_pr_id.outputs.pr_id }}
+
+      - name: Merge main-apache branch
+        if: steps.check_changes.outputs.is_changed
+        run: git merge --no-edit origin/main-apache
+
+      - name: Push changes
+        if: steps.check_changes.outputs.is_changed
+        run: git push origin
+
+      - name: Create the PR
+        if: steps.check_changes.outputs.is_changed
+        run: |
+            gh pr create --title "Automatic PR: Sync main with main-apache - ${{steps.generate_pr_id.outputs.pr_id}}" --body "This PR synchronizes the main branch with main-apache."
+
