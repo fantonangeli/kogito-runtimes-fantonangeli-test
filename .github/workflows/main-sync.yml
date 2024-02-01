@@ -30,7 +30,8 @@ jobs:
           git config --global user.email "$USEREMAIL"
 
       - name: Fetch all
-        run: git fetch --all
+        # By default, GitHub fetches only a single commit unless you specify "--depth 0". Without this "git merge" throwns an "unrelated histories".
+        run: git fetch --all --depth 0
 
       - name: Checkout main branch
         run: git checkout main
