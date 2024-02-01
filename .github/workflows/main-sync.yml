@@ -64,7 +64,8 @@ jobs:
       - name: Create the PR
         if: steps.check_changes.outputs.is_changed
         run: |
+            runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
             gh pr create \
               --title "Automatic PR: Sync main with main-apache (${{steps.generate_pr_id.outputs.pr_id}})" \
-              --body "This pull request hab been created by a GitHub workflow and synchronizes the main branch with main-apache."
+              --body "This pull request hab been created by a GitHub workflow and synchronizes the main branch with main-apache.<br />[View Actions](${runUrl})"
 
