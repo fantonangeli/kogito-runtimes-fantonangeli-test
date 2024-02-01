@@ -64,5 +64,7 @@ jobs:
       - name: Create the PR
         if: steps.check_changes.outputs.is_changed
         run: |
-            gh pr create --title "Automatic PR: Sync main with main-apache - ${{steps.generate_pr_id.outputs.pr_id}}" --body "This PR synchronizes the main branch with main-apache."
+            gh pr create \
+              --title "Automatic PR: Sync main with main-apache (${{steps.generate_pr_id.outputs.pr_id}})" \
+              --body "This pull request hab been created by a GitHub workflow and synchronizes the main branch with main-apache."
 
