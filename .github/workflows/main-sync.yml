@@ -76,7 +76,7 @@ jobs:
             runUrl="${{github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             commitUrl="${{ github.server_url }}/${{ github.repository }}/commit/$( git rev-parse HEAD )"
             excludedPaths="${{ steps.exclude_paths.outputs.excluded_paths }}"
-            if [[ -n ${{ steps.exclude_paths.outputs.excluded_paths }} ]]; then
+            if [[ -n "${{ steps.exclude_paths.outputs.excluded_paths }}" ]]; then
               lastCommitLink="[View exclude paths commit](${commitUrl})"
             fi
             prTitle="Automatic PR: Sync main with main-apache (${{steps.generate_pr_id.outputs.pr_id}})"
