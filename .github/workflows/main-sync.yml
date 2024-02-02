@@ -63,7 +63,7 @@ jobs:
         run: |
             git reset origin/main ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
             git checkout -- ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
-            echo "excluded_paths=$(git diff --name-only --cached | tr '\n' '<br />')" >> $GITHUB_OUTPUT
+            echo "excluded_paths=$(git diff --name-only --cached)" >> $GITHUB_OUTPUT
             git commit -m "Merge changes excluding white-listed paths"
 
       - name: Push changes
@@ -82,4 +82,3 @@ jobs:
             prTitle="Automatic PR: Sync main with main-apache (${{steps.generate_pr_id.outputs.pr_id}})"
             prBody="This pull request has been created by a GitHub workflow and synchronizes the main branch with main-apache branch.<br /><b>Excluded paths:</b><br />${{ steps.exclude_paths.outputs.excluded_paths }}<br />[View Action](${runUrl}) ${lastCommitLink}"
             gh pr create --title "${prTitle}" --body "${prBody}" --base main --reviewer ${{vars.MAIN_SYNC_PR_REVIEWERS}}
-
