@@ -60,8 +60,8 @@ jobs:
       - name: Exclude white-listed paths from the merge
         id: exclude_paths
         run: |
-            git reset origin/main ${{MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
-            git checkout -- ${{MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
+            git reset origin/main ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
+            git checkout -- ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
             echo "excluded_paths=$(git diff --name-only --cached)" >> $GITHUB_OUTPUT
             git commit -m "Merge changes excluding white-listed directories"
 
