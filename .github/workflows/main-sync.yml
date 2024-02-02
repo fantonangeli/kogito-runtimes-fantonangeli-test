@@ -57,6 +57,14 @@ jobs:
         if: steps.check_changes.outputs.is_changed
         run: git merge --no-edit origin/main-apache
 
+      - name: Exclude white-listed paths from the merge
+        id: exclude_paths
+        run: |
+            git reset origin/main ${{MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
+            git checkout -- ${{MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
+            echo "excluded_paths=$(git diff --name-only --cached)" >> $GITHUB_OUTPUT
+            git commit -m "Merge changes excluding white-listed directories"
+
       - name: Push changes
         if: steps.check_changes.outputs.is_changed
         run: git push -u origin sync-main-pr-${{ steps.generate_pr_id.outputs.pr_id }}
@@ -67,5 +75,6 @@ jobs:
             runUrl="${{github.server_url}}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             gh pr create \
               --title "Automatic PR: Sync main with main-apache (${{steps.generate_pr_id.outputs.pr_id}})" \
-              --body "This pull request has been created by a GitHub workflow and synchronizes the main branch with main-apache branch.<br />[View Actions](${runUrl})"
+                                                                                                          --body "This pull request has been created by a GitHub workflow and synchronizes the main branch with main-apache branch.<br /><b>Excluded paths:</b><br />${{ steps.exclude_paths.excluded_paths }}<br />[View Action](${runUrl})" \
+              --base main --reviewer ${{vars.MAIN_SYNC_PR_REVIEWERS}}
 
