@@ -50,9 +50,7 @@ jobs:
             git reset origin/main ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
             git checkout -- ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
             echo "excluded_paths=$(git diff --name-only --cached --raw | sed -z "s/\n/<br \/>/g")" >> $GITHUB_OUTPUT
-            if ! git diff --quiet; then
-              git commit -m "Merge changes excluding white-listed paths"
-            fi
+            git commit -m "Exclude white-listed changes from the merge" || true
 
       - name: Check for changes
         id: check_changes
