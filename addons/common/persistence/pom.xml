@@ -35,6 +35,7 @@
   <modules>
     <module>jdbc</module>
     <module>ddl</module>
+    Forcefully make conflicts
   </modules>
 
   <profiles>
