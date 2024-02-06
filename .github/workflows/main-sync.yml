@@ -50,7 +50,7 @@ jobs:
             git reset origin/main ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
             git checkout -- ${{vars.MAIN_SYNC_WORKFLOW_EXCLUDE_PATHS}}
             echo "excluded_paths=$(git diff --name-only --cached --raw | sed -z "s/\n/<br \/>/g")" >> $GITHUB_OUTPUT
-            if [[ -n "${{ steps.exclude_paths.outputs.excluded_paths }}" ]]; then
+            if git diff --quiet; then
               git commit -m "Merge changes excluding white-listed paths"
             fi
 
@@ -78,11 +78,11 @@ jobs:
               excludedPaths="${{ steps.exclude_paths.outputs.excluded_paths }}"
               lastCommitLink="<br />[View exclude paths commit](${commitUrl})"
             else
-              excludedPaths="No files have been excluded"
+              excludedPaths="No files have been excluded<br />"
             fi
             prTitle="Automatic PR: Sync main with main-apache (${{steps.generate_pr_id.outputs.pr_id}})"
             prBody="This pull request has been created by a GitHub workflow and synchronizes the main branch with main-apache branch.<br /><br /><b>Excluded paths:</b><br />${excludedPaths}<br />[View Action](${runUrl})${lastCommitLink}"
             if [[ -n "${{ vars.MAIN_SYNC_WORKFLOW_PR_REVIEWERS }}" ]]; then
-                reviewesOption="--reviewer ${{vars.MAIN_SYNC_WORKFLOW_PR_REVIEWERS}}"
+                reviewersOption="--reviewer ${{vars.MAIN_SYNC_WORKFLOW_PR_REVIEWERS}}"
             fi
-            gh pr create --title "${prTitle}" --body "${prBody}" --base main $reviewesOption
+            gh pr create --title "${prTitle}" --body "${prBody}" --base main $reviewersOption
